@@ -21,7 +21,8 @@ class AuthenticateUserService {
   public async execute({ email, password }: Request): Promise<Response> {
     const usersRepository = getCustomRepository(UsersRepository);
 
-    let user = await usersRepository.findByEmail(email, {
+    let user = await usersRepository.findOne({
+      where: { email },
       select: ['id', 'email', 'password'],
     });
 

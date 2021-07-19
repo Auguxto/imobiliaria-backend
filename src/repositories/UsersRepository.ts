@@ -10,7 +10,6 @@ class UsersRepository extends Repository<User> {
   ): Promise<User | null> {
     const findUser = await this.findOne({
       where: { email },
-      select: options.select,
     });
 
     return findUser || null;
