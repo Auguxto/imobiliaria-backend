@@ -9,7 +9,7 @@ const tmpFolder = path.join(__dirname, '..', '..', 'tmp', 'avatars');
 export default {
   directory: tmpFolder,
   fileFilter: (
-    req: Request,
+    request: Request,
     file: Express.Multer.File,
     callback: FileFilterCallback,
   ) => {

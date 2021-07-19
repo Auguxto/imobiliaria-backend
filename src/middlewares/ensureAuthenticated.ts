@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
+import { getCustomRepository } from 'typeorm';
 
 import auth from '../config/auth';
 
 import AppError from '../errors/AppError';
+import UsersRepository from '../repositories/UsersRepository';
 
 interface TokenPayload {
   iat: number;
@@ -11,11 +13,11 @@ interface TokenPayload {
   sub: string;
 }
 
-export default function ensureAuthenticated(
+export default async function ensureAuthenticated(
   request: Request,
   response: Response,
   next: NextFunction,
-): void {
+): Promise<void> {
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
@@ -30,6 +32,14 @@ export default function ensureAuthenticated(
     const decoded = verify(token, secret);
 
     const { sub } = decoded as TokenPayload;
+
+    const usersRepository = getCustomRepository(UsersRepository);
+
+    const user = await usersRepository.findOne(sub);
+
+    if (!user) {
+      throw new AppError('Invalid JWT token', 401);
+    }
 
     request.user = { id: sub };
 
