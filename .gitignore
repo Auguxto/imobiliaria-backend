@@ -3,3 +3,4 @@ tmp/avatars/
 build/
 .vscode/
 !tmp/avatars/.gitkeep
+text.md
