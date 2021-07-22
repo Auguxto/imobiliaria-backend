@@ -1,6 +1,12 @@
 import { Router } from 'express';
+import multer from 'multer';
+
+import uploadPropertiesPhotos from '../config/uploadPropertiesPhotos';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 import CreatePropertieService from '../services/CreatePropertieService';
+import UpdatePropertiesPhotos from '../services/UpdatePropertiesPhotos';
+
+const upload = multer(uploadPropertiesPhotos);
 
 const propertiesRouter = Router();
 
@@ -45,5 +51,25 @@ propertiesRouter.post('/', ensureAuthenticated, async (request, response) => {
 
   return response.json(propertie);
 });
+
+propertiesRouter.patch(
+  '/photos',
+  ensureAuthenticated,
+  upload.array('files'),
+  async (request, response) => {
+    const { propertie_id } = request.body;
+    console.log(propertie_id);
+
+    const updatePropertiesPhotos = new UpdatePropertiesPhotos();
+
+    const propertie = await updatePropertiesPhotos.execute({
+      user_id: request.user.id,
+      propertie_id,
+      photos: request.files.map(photo => photo.filename),
+    });
+
+    return response.json(propertie);
+  },
+);
 
 export default propertiesRouter;

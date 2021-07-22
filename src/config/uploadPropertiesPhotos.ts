@@ -5,10 +5,10 @@ import { Request } from 'express';
 
 import AppError from '../errors/AppError';
 
-const avatarsFolder = path.join(__dirname, '..', '..', 'tmp', 'avatars');
+const propertiesFolder = path.join(__dirname, '..', '..', 'tmp', 'properties');
 
 const tmpFolder = {
-  avatarsFolder,
+  propertiesFolder,
 };
 
 export default {
@@ -27,7 +27,7 @@ export default {
     }
   },
   storage: multer.diskStorage({
-    destination: tmpFolder.avatarsFolder,
+    destination: tmpFolder.propertiesFolder,
     filename(request, file, callback) {
       const fileHash = crypto.randomBytes(10).toString('hex');
       const filename = `${fileHash}-${file.originalname}`;
