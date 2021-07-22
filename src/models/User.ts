@@ -46,7 +46,7 @@ class User {
   updated_at: Date;
 
   @BeforeInsert()
-  async setDefaultProperties(): Promise<void> {
+  async setDefaults(): Promise<void> {
     this.properties = [];
   }
 }

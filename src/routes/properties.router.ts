@@ -7,6 +7,8 @@ const propertiesRouter = Router();
 propertiesRouter.post('/', ensureAuthenticated, async (request, response) => {
   const {
     city,
+    address,
+    number,
     state,
     price,
     description,
@@ -24,6 +26,8 @@ propertiesRouter.post('/', ensureAuthenticated, async (request, response) => {
 
   const propertie = await createPropertie.execute({
     owner_id: request.user.id,
+    address,
+    number,
     city,
     state,
     price,

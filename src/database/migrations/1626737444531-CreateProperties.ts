@@ -99,22 +99,9 @@ export class CreateProperties1626737444531 implements MigrationInterface {
         ],
       }),
     );
-
-    await queryRunner.createForeignKey(
-      'properties',
-      new TableForeignKey({
-        name: 'PropertieOwner',
-        columnNames: ['owner_id'],
-        referencedColumnNames: ['id'],
-        referencedTableName: 'users',
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-      }),
-    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('properties', 'PropertieOwner');
     await queryRunner.dropTable('properties');
   }
 }

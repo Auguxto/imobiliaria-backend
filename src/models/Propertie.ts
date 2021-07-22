@@ -19,9 +19,9 @@ class Propertie {
   @Column()
   owner_id: string;
 
-  @ManyToOne(type => User)
   @JoinColumn({ name: 'owner_id' })
-  owner: User;
+  @ManyToOne(() => User)
+  user: User;
 
   @Column()
   bathrooms: number;
@@ -48,6 +48,12 @@ class Propertie {
   city: string;
 
   @Column()
+  address: string;
+
+  @Column()
+  number: string;
+
+  @Column()
   state: string;
 
   @Column()
@@ -72,8 +78,10 @@ class Propertie {
   updated_at: Date;
 
   @BeforeInsert()
-  async setDefaultPhotos(): Promise<void> {
+  async setDefaults(): Promise<void> {
     this.photos = [];
+    this.address = '';
+    this.number = '';
   }
 }
 

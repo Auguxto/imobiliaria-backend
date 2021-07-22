@@ -10,24 +10,28 @@ import UsersRepository from '../repositories/UsersRepository';
  */
 interface Request {
   owner_id: string;
-  bathrooms?: number;
-  rooms?: number;
-  bedrooms?: number;
-  suites?: number;
-  propertie_size?: number;
-  terrain_size?: number;
+  address: string;
+  number: string;
+  bathrooms: number;
+  rooms: number;
+  bedrooms: number;
+  suites: number;
+  propertie_size: number;
+  terrain_size: number;
   type: string;
   city: string;
   state: string;
   price: number;
   description: string;
-  parking_spaces?: number;
+  parking_spaces: number;
   goal: string;
 }
 
 class CreatePropertieService {
   public async execute({
     owner_id,
+    address,
+    number,
     bathrooms,
     rooms,
     bedrooms,
@@ -53,6 +57,8 @@ class CreatePropertieService {
 
     const propertie = propertiesRepository.create({
       owner_id,
+      address,
+      number,
       bathrooms,
       rooms,
       bedrooms,
@@ -70,7 +76,20 @@ class CreatePropertieService {
 
     await propertiesRepository.save(propertie);
 
+    user.properties = [...user.properties, propertie.id];
+
+    await usersRepository.save(user);
+
     return propertie;
+  }
+
+  public async list(): Promise<Propertie[] | null> {
+    const propertiesRepository = getCustomRepository(PropertiesRepository);
+    const properties = await propertiesRepository.find({
+      relations: ['user'],
+    });
+
+    return properties || null;
   }
 }
 
