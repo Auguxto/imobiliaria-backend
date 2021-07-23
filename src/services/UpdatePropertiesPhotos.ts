@@ -41,20 +41,22 @@ class UpdatePropertiesPhotos {
       throw new AppError('You are not the owner of this property', 401);
     }
 
-    if (propertie.photos) {
-      for (let i = 0; propertie.photos.length >= 0; i++) {
-        try {
-          await fs.promises.unlink(
-            path.join(
-              uploadPropertiesPhotos.directory.propertiesFolder,
-              propertie.photos[i],
-            ),
-          );
-        } catch {}
-      }
+    if (propertie.photos.length !== 0) {
+      propertie.photos.map(async propertie => {
+        let filePath = path.join(
+          uploadPropertiesPhotos.directory.propertiesFolder,
+          propertie,
+        );
+
+        let fileExist = await fs.promises.stat(filePath);
+
+        if (fileExist) {
+          await fs.promises.unlink(filePath);
+        }
+      });
     }
 
-    propertie.photos = [...photos];
+    propertie.photos = photos;
 
     await propertiesRepository.save(propertie);
 

@@ -3,6 +3,6 @@ declare namespace Express {
     user: {
       id: string;
     };
-    files: [file];
+    files: Array[];
   }
 }

@@ -58,14 +58,15 @@ propertiesRouter.patch(
   upload.array('files'),
   async (request, response) => {
     const { propertie_id } = request.body;
-    console.log(propertie_id);
 
     const updatePropertiesPhotos = new UpdatePropertiesPhotos();
+
+    const photos = request.files.map(photo => photo.filename);
 
     const propertie = await updatePropertiesPhotos.execute({
       user_id: request.user.id,
       propertie_id,
-      photos: request.files.map(photo => photo.filename),
+      photos,
     });
 
     return response.json(propertie);
