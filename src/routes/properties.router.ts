@@ -4,11 +4,40 @@ import multer from 'multer';
 import uploadPropertiesPhotos from '../config/uploadPropertiesPhotos';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 import CreatePropertieService from '../services/CreatePropertieService';
+import ListPropertieService from '../services/ListPropertieService';
 import UpdatePropertiesPhotos from '../services/UpdatePropertiesPhotos';
 
 const upload = multer(uploadPropertiesPhotos);
 
 const propertiesRouter = Router();
+
+propertiesRouter.get('/', async (request, response) => {
+  const listPropertieService = new ListPropertieService();
+
+  const properties = await listPropertieService.listProperties();
+
+  return response.json({ properties });
+});
+
+propertiesRouter.get('/:id', async (request, response) => {
+  const { id } = request.params;
+
+  const listPropertieService = new ListPropertieService();
+
+  const propertie = await listPropertieService.getById(id);
+
+  return response.json(propertie);
+});
+
+propertiesRouter.get('/user/:userId', async (request, response) => {
+  const { userId } = request.params;
+
+  const listPropertieService = new ListPropertieService();
+
+  const properties = await listPropertieService.getByUserId(userId);
+
+  return response.json(properties);
+});
 
 propertiesRouter.post('/', ensureAuthenticated, async (request, response) => {
   const {

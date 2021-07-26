@@ -27,7 +27,6 @@ export class AddFieldsToPropertiesTable1626919237218
       new TableColumn({
         name: 'number',
         type: 'varchar',
-        isNullable: true,
       }),
     ]);
   }

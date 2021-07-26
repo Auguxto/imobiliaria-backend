@@ -80,8 +80,6 @@ class Propertie {
   @BeforeInsert()
   async setDefaults(): Promise<void> {
     this.photos = [];
-    this.address = '';
-    this.number = '';
   }
 }
 
