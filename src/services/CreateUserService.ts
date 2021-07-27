@@ -1,9 +1,8 @@
 import { hash } from 'bcryptjs';
-import { getCustomRepository } from 'typeorm';
+import { getUsersRepository } from '../core/repositories';
 
 import AppError from '../errors/AppError';
 import User from '../models/User';
-import UsersRepository from '../repositories/UsersRepository';
 
 interface Request {
   name: string;
@@ -23,7 +22,7 @@ class CreateUserService {
     state,
     city,
   }: Request): Promise<User> {
-    const usersRepository = getCustomRepository(UsersRepository);
+    const usersRepository = getUsersRepository();
 
     const checkUserExists = await usersRepository.findByEmail(email);
 

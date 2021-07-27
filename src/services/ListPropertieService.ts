@@ -1,9 +1,8 @@
-import { getCustomRepository } from 'typeorm';
 import { validate } from 'uuid';
+import { getPropertiesRepository } from '../core/repositories';
 
 import AppError from '../errors/AppError';
 import Propertie from '../models/Propertie';
-import PropertiesRepository from '../repositories/PropertiesRepository';
 
 type obj = {
   [key: string]: any;
@@ -20,8 +19,7 @@ class ListPropertieService {
       throw new AppError('Please provide filters', 400);
     }
 
-    const propertiesRepository = getCustomRepository(PropertiesRepository);
-
+    const propertiesRepository = getPropertiesRepository();
     let filters = filterString.split(';');
     if (filters[0] === '') {
       throw new AppError('Please provide filters', 400);
@@ -52,7 +50,7 @@ class ListPropertieService {
     return properties || null;
   }
   public async listProperties(): Promise<Propertie[] | null> {
-    const propertiesRepository = getCustomRepository(PropertiesRepository);
+    const propertiesRepository = getPropertiesRepository();
 
     const properties = await propertiesRepository.find();
 
@@ -64,7 +62,7 @@ class ListPropertieService {
       throw new AppError('Please send a valid id', 400);
     }
 
-    const propertiesRepository = getCustomRepository(PropertiesRepository);
+    const propertiesRepository = getPropertiesRepository();
 
     const propertie = await propertiesRepository.findOne(id);
 
@@ -80,7 +78,7 @@ class ListPropertieService {
       throw new AppError('Please send a valid id', 400);
     }
 
-    const propertiesRepository = getCustomRepository(PropertiesRepository);
+    const propertiesRepository = getPropertiesRepository();
 
     const properties = await propertiesRepository.find({
       where: { owner_id: userId },

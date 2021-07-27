@@ -1,11 +1,10 @@
 import { sign } from 'jsonwebtoken';
 import { compare } from 'bcryptjs';
-import { getCustomRepository } from 'typeorm';
 
 import User from '../models/User';
-import UsersRepository from '../repositories/UsersRepository';
 import AppError from '../errors/AppError';
 import auth from '../config/auth';
+import { getUsersRepository } from '../core/repositories';
 
 interface Request {
   email: string;
@@ -19,12 +18,9 @@ interface Response {
 
 class AuthenticateUserService {
   public async execute({ email, password }: Request): Promise<Response> {
-    const usersRepository = getCustomRepository(UsersRepository);
+    const usersRepository = getUsersRepository();
 
-    let user = await usersRepository.findOne({
-      where: { email },
-      select: ['id', 'email', 'password'],
-    });
+    let user = await usersRepository.findToAuth(email);
 
     if (!user) {
       throw new AppError('Incorrect email/password combination.', 401);

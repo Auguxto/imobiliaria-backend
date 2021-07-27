@@ -1,13 +1,11 @@
-import { getCustomRepository } from 'typeorm';
+import {
+  getPropertiesRepository,
+  getUsersRepository,
+} from '../core/repositories';
 
 import AppError from '../errors/AppError';
 import Propertie from '../models/Propertie';
-import PropertiesRepository from '../repositories/PropertiesRepository';
-import UsersRepository from '../repositories/UsersRepository';
 
-/**
- * Obrigatorios (owner_id, type, city, state, price, description)
- */
 interface Request {
   owner_id: string;
   address: string;
@@ -46,8 +44,8 @@ class CreatePropertieService {
     parking_spaces,
     goal,
   }: Request): Promise<Propertie> {
-    const usersRepository = getCustomRepository(UsersRepository);
-    const propertiesRepository = getCustomRepository(PropertiesRepository);
+    const usersRepository = getUsersRepository();
+    const propertiesRepository = getPropertiesRepository();
 
     let user = await usersRepository.findOne(owner_id);
 
@@ -84,7 +82,7 @@ class CreatePropertieService {
   }
 
   public async list(): Promise<Propertie[] | null> {
-    const propertiesRepository = getCustomRepository(PropertiesRepository);
+    const propertiesRepository = getPropertiesRepository();
     const properties = await propertiesRepository.find({
       relations: ['user'],
     });

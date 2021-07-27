@@ -1,4 +1,3 @@
-import { getCustomRepository } from 'typeorm';
 import path from 'path';
 import fs from 'fs';
 
@@ -6,7 +5,7 @@ import uploadConfig from '../config/upload';
 
 import AppError from '../errors/AppError';
 import User from '../models/User';
-import UsersRepository from '../repositories/UsersRepository';
+import { getUsersRepository } from '../core/repositories';
 
 interface Request {
   user_id: string;
@@ -15,7 +14,7 @@ interface Request {
 
 class UpdateAvatarService {
   public async execute({ user_id, avatarFilename }: Request): Promise<User> {
-    const usersRepository = getCustomRepository(UsersRepository);
+    const usersRepository = getUsersRepository();
 
     const user = await usersRepository.findOne(user_id);
 

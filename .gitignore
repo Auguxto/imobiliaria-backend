@@ -1,5 +1,6 @@
 node_modules
 tmp/avatars/
+tmp/properties/
 build/
 .vscode/
 !tmp/avatars/.gitkeep

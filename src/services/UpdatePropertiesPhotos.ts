@@ -1,12 +1,13 @@
-import { getCustomRepository } from 'typeorm';
 import path from 'path';
 import fs from 'fs';
 
 import AppError from '../errors/AppError';
-import PropertiesRepository from '../repositories/PropertiesRepository';
-import UsersRepository from '../repositories/UsersRepository';
 import uploadPropertiesPhotos from '../config/uploadPropertiesPhotos';
 import Propertie from '../models/Propertie';
+import {
+  getPropertiesRepository,
+  getUsersRepository,
+} from '../core/repositories';
 
 interface Request {
   user_id: string;
@@ -20,8 +21,8 @@ class UpdatePropertiesPhotos {
     propertie_id,
     photos,
   }: Request): Promise<Propertie> {
-    const usersRepository = getCustomRepository(UsersRepository);
-    const propertiesRepository = getCustomRepository(PropertiesRepository);
+    const usersRepository = getUsersRepository();
+    const propertiesRepository = getPropertiesRepository();
 
     const user = await usersRepository.findOne(user_id);
     const propertie = await propertiesRepository.findOne(propertie_id);
