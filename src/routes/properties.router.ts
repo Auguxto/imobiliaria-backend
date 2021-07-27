@@ -11,6 +11,16 @@ const upload = multer(uploadPropertiesPhotos);
 
 const propertiesRouter = Router();
 
+propertiesRouter.get('/filter', async (request, response) => {
+  const { filter } = request.query;
+
+  const listPropertieService = new ListPropertieService();
+
+  const properties = await listPropertieService.getFilteredProperties(filter);
+
+  return response.json({ properties });
+});
+
 propertiesRouter.get('/', async (request, response) => {
   const listPropertieService = new ListPropertieService();
 

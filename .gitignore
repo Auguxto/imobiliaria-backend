@@ -5,7 +5,7 @@ build/
 !tmp/avatars/.gitkeep
 !tmp/properties/.gitkeep
 text.md
-.png
-.jpg
-.jpeg
-.jpe
+**.png
+**.jpg
+**.jpeg
+**.jpe
